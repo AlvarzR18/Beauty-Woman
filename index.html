@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyWoman - Tienda Virtual</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header con video de fondo -->
+    <header class="header">
+        <div class="video-container">
+            <video autoplay muted loop playsinline class="header-video">
+                <source src="fondo.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+        </div>
+        <div class="header-content">
+            <h1>BeautyWoman</h1>
+            <p>Elegancia en cada detalle</p>
+        </div>
+    </header>
+
+    <!-- Selector de estilo -->
+    <div class="style-selector">
+        <button class="style-btn active" data-style="gold">
+            <span class="style-dot gold"></span> Dorado
+        </button>
+        <button class="style-btn" data-style="silver">
+            <span class="style-dot silver"></span> Plateado
+        </button>
+        <button class="style-btn" data-style="neutral">
+            <span class="style-dot neutral"></span> Neutral
+        </button>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <!-- Productos -->
+        <div class="products-section">
+            <!-- Filtros -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Precio mínimo</label>
+                    <input type="number" id="price-min" value="0" min="0" step="1">
+                </div>
+                <div class="filter-group">
+                    <label>Precio máximo</label>
+                    <input type="number" id="price-max" value="50" min="0" step="1">
+                </div>
+                <button id="apply-filters" class="filter-btn">Aplicar filtro</button>
+                <button id="clear-filters" class="filter-btn clear">Limpiar</button>
+            </div>
+
+            <!-- Grid de productos -->
+            <div class="products-grid" id="products-grid">
+                <!-- Productos se generarán con JavaScript -->
+            </div>
+        </div>
+
+        <!-- Carrito desplegable -->
+        <div class="cart-wrapper">
+            <button id="cart-toggle" class="cart-toggle">
+                🛒 Carrito <span id="cart-count">0</span>
+            </button>
+            <div class="cart-dropdown" id="cart-dropdown">
+                <div class="cart-header">
+                    <h3>Mi Carrito</h3>
+                    <button id="cart-close" class="cart-close">×</button>
+                </div>
+                <div id="cart-items"></div>
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <button id="checkout-btn" class="checkout-btn">Obtener</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content product-modal-content">
+            <button class="modal-close" id="product-modal-close">×</button>
+            <div class="product-modal-body">
+                <div class="product-modal-image">
+                    <img id="modal-product-image" src="" alt="">
+                </div>
+                <div class="product-modal-info">
+                    <h2 id="modal-product-name"></h2>
+                    <p class="modal-product-price" id="modal-product-price"></p>
+                    <p class="modal-product-description" id="modal-product-description"></p>
+                    <div class="modal-product-actions">
+                        <button id="modal-add-cart" class="modal-btn add-cart">Agregar al carrito</button>
+                        <button id="modal-buy-now" class="modal-btn buy-now">Comprar ahora</button>
+                        <button id="modal-cancel" class="modal-btn cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de compra -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Confirmar Compra</h2>
+            <div id="confirm-details"></div>
+            <div style="display:flex; gap:15px; margin-top:20px;">
+                <button id="confirm-yes" class="submit-order" style="flex:1;">Confirmar Pedido</button>
+                <button id="confirm-no" class="checkout-btn" style="flex:1; background:#999;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de formulario (sin campo de dirección) -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Completar Pedido</h2>
+            <!-- Información de retiro -->
+            <div style="background:#f8f6f3; padding:12px 16px; border-radius:10px; margin-bottom:20px; border-left:4px solid var(--primary, #d4af37);">
+                <p style="font-size:0.85rem; color:#555; margin:0;">
+                    <strong>📍 Punto de retiro:</strong><br>
+                    <span id="store-address-display">Cargando dirección...</span><br>
+                    <span style="font-size:0.75rem; color:#888;">Horario: Lunes a Viernes de 10:00 a 20:00</span>
+                </p>
+            </div>
+            <form id="order-form">
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="customer-phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de entrega</label>
+                    <input type="date" id="delivery-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Productos seleccionados</label>
+                    <div id="order-products"></div>
+                </div>
+                <div class="form-group">
+                    <label>Total</label>
+                    <div id="order-total"></div>
+                </div>
+                <button type="submit" class="submit-order">Continuar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
